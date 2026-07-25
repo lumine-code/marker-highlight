@@ -20,27 +20,24 @@ describe("scrollmap-highlight", () => {
     });
     fake.updateSync = fake.update;
     fake.refresh = () => {};
-    targetEditor.scrollmap = {
-      layers: new Map([[provider.name, fake]]),
-      updateView() {},
-    };
     if (provider.initialize) {
       provider.initialize(fake);
     }
     return fake;
   }
 
-  // Fake provider mirroring the SelectionManager returned by the real
-  // highlight-selected package's provideHighlightSelected(): it exposes
-  // onDidFinishAddingMarkers, onDidRemoveAllMarkers, and
-  // editorToMarkerLayerMap[editorId] = { markerLayer, decoration }.
+  // Fake provider mirroring the facade returned by the real highlight-selected
+  // package's provideHighlightSelected(): onDidFinishAddingMarkers,
+  // onDidRemoveAllMarkers, and getMarkersForEditor(editor).
   function makeFakeService() {
     const emitter = new Emitter();
+    const markerLayers = new Map();
     return {
       emitter,
-      editorToMarkerLayerMap: {},
+      markerLayers,
       onDidFinishAddingMarkers: (callback) => emitter.on("did-finish-adding-markers", callback),
       onDidRemoveAllMarkers: (callback) => emitter.on("did-remove-all-markers", callback),
+      getMarkersForEditor: (markerEditor) => markerLayers.get(markerEditor)?.getMarkers() || [],
     };
   }
 
@@ -66,7 +63,7 @@ describe("scrollmap-highlight", () => {
     for (const range of ranges) {
       markerLayer.markScreenRange(range);
     }
-    service.editorToMarkerLayerMap[editor.id] = { markerLayer };
+    service.markerLayers.set(editor, markerLayer);
     return markerLayer;
   }
 
