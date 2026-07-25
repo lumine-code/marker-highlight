@@ -25,7 +25,7 @@ The marker style can be adjusted in the `styles.less` file, e.g. change the mark
 ## Services
 
 - **scrollmap** (`1.0.0`): provided to render highlighted selection markers as a layer on the editor scrollbar.
-- **highlight-selected** (`1.0.0`): consumed to observe the highlight marker layers of each editor.
+- **highlight-selected** (`^1.0.0`): consumed to observe the highlight marker layers of each editor.
 
 ## Contributing
 

@@ -27,7 +27,7 @@
   "consumedServices": {
     "highlight-selected": {
       "versions": {
-        "1.0.0": "consumeHighlightSelected"
+        "^1.0.0": "consumeHighlightSelected"
       }
     }
   },
