@@ -1,14 +1,31 @@
 # scrollmap-highlight
 
-Show highlight markers on the scrollbar.
+Show highlight markers on the scrollbar. A layer package for [scrollmap](https://github.com/lumine-code/scrollmap). Requires [highlight-selected](https://github.com/lumine-code/highlight-selected).
+
+## Features
+
+- **Highlight markers**: shows every highlighted selection occurrence on the scrollbar.
+- **Range merging**: adjacent highlight rows are merged into a single marker.
+- **Threshold**: hides markers when the highlight count exceeds a configurable limit.
 
 ## Installation
 
-To install `scrollmap-highlight` search for [scrollmap-highlight](https://web.pulsar-edit.dev/packages/scrollmap-highlight) in the Install pane of the Pulsar settings or run `ppm install scrollmap-highlight`. Alternatively, you can run `ppm install asiloisad/pulsar-scrollmap-highlight` to install a package directly from the GitHub repository.
+To install `scrollmap-highlight` search for _scrollmap-highlight_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/scrollmap-highlight`.
 
-Layer package for [scrollmap](https://github.com/asiloisad/pulsar-scrollmap).
+## Customization
 
-Requires [highlight-simple](https://github.com/asiloisad/pulsar-highlight-simple).
+The marker style can be adjusted in the `styles.less` file, e.g. change the marker color:
+
+```less
+.scrollmap .marker.marker-highlight {
+  background-color: var(--text-color-info);
+}
+```
+
+## Services
+
+- **scrollmap** (`1.0.0`): provided to render highlighted selection markers as a layer on the editor scrollbar.
+- **highlight-selected** (`1.0.0`): consumed to observe the highlight marker layers of each editor.
 
 ## Contributing
 
