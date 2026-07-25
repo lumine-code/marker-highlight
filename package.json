@@ -7,10 +7,12 @@
     "url": "https://github.com/lumine-code/scrollmap-highlight/issues"
   },
   "keywords": [
-    "scrollmap",
-    "highlight",
+    "overview-ruler",
+    "gutter",
+    "annotation",
+    "decoration",
     "selection",
-    "marker"
+    "occurrence"
   ],
   "version": "1.0.0",
   "license": "MIT",
