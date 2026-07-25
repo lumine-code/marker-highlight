@@ -1,6 +1,8 @@
 # scrollmap-highlight
 
-Show highlight markers on the scrollbar. A layer package for [scrollmap](https://github.com/lumine-code/scrollmap). Requires [highlight-selected](https://github.com/lumine-code/highlight-selected).
+Show highlight markers on the scrollbar.
+
+A layer package for [scrollmap](https://github.com/lumine-code/scrollmap). Requires [highlight-selected](https://github.com/lumine-code/highlight-selected).
 
 ## Features
 
