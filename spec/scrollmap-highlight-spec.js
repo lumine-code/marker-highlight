@@ -71,6 +71,8 @@ describe("scrollmap-highlight", () => {
     expect(atom.packages.isPackageActive("scrollmap-highlight")).toBe(true);
     expect(provider.name).toBe("highlight");
     expect(typeof provider.description).toBe("string");
+    expect(provider.merge).toBe(true);
+    expect(provider.threshold).toBe("scrollmap-highlight.threshold");
     expect(typeof provider.initialize).toBe("function");
     expect(typeof provider.getItems).toBe("function");
   });
@@ -94,16 +96,12 @@ describe("scrollmap-highlight", () => {
     ]);
   });
 
-  it("sorts markers by row and merges adjacent ranges", () => {
+  it("returns raw ranges and leaves sorting and merging to the hub", () => {
     // Created out of document order on purpose.
     markRanges(
       [
         [20, 0],
         [20, 5],
-      ],
-      [
-        [4, 0],
-        [4, 5],
       ],
       [
         [3, 0],
@@ -112,25 +110,9 @@ describe("scrollmap-highlight", () => {
     );
     service.emitter.emit("did-finish-adding-markers");
     expect(layer.items).toEqual([
-      { row: 3, end: 4 },
       { row: 20, end: 20 },
+      { row: 3, end: 3 },
     ]);
-  });
-
-  it("hides all markers when the item count exceeds the threshold", () => {
-    atom.config.set("scrollmap-highlight.threshold", 1);
-    markRanges(
-      [
-        [2, 0],
-        [2, 5],
-      ],
-      [
-        [10, 0],
-        [10, 5],
-      ],
-    );
-    service.emitter.emit("did-finish-adding-markers");
-    expect(layer.items).toEqual([]);
   });
 
   it("clears the layer when all markers are removed", () => {
@@ -144,12 +126,6 @@ describe("scrollmap-highlight", () => {
     markerLayer.clear();
     service.emitter.emit("did-remove-all-markers");
     expect(layer.items).toEqual([]);
-  });
-
-  it("updates the layer when the threshold setting changes", () => {
-    layer.update.calls.reset();
-    atom.config.set("scrollmap-highlight.threshold", 3);
-    expect(layer.update).toHaveBeenCalled();
   });
 
   it("stops updating the layer once the consumer is disposed", () => {
