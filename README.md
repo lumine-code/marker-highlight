@@ -26,8 +26,8 @@ The marker style can be adjusted in the `styles.less` file, e.g. change the mark
 
 ## Services
 
-- **scrollmap.layer** (`1.0.0`): provided to render highlighted selection markers as a layer on the editor scrollbar.
-- **highlight-selected** (`^1.0.0`): consumed to observe the highlight marker layers of each editor.
+- **[scrollmap.layer](https://lumine-code.github.io/docs.html#services/scrollmap.layer)** (`1.0.0`): provided to render highlighted selection markers as a layer on the editor scrollbar.
+- **[highlight-selected](https://lumine-code.github.io/docs.html#services/highlight-selected)** (`^1.0.0`): consumed to observe the highlight marker layers of each editor.
 
 ## Contributing
 
