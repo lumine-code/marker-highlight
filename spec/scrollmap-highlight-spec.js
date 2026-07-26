@@ -45,7 +45,7 @@ describe("scrollmap-highlight", () => {
     jasmine.attachToDOM(atom.views.getView(atom.workspace));
     const pack = await atom.packages.activatePackage("scrollmap-highlight");
     mainModule = pack.mainModule;
-    provider = mainModule.provideScrollmap();
+    provider = mainModule.provideScrollmapLayer();
     editor = await atom.workspace.open();
     editor.setText(Array(50).fill("hello world").join("\n"));
     layer = makeLayer(editor);
