@@ -154,6 +154,23 @@ describe("marker-highlight", () => {
     expect(second.update).not.toHaveBeenCalled();
   });
 
+  // The other detach order: the renderer that attached first goes away, and the
+  // layer left in the set must keep receiving pushes.
+  it("keeps pushing to the surviving layer after one detaches", () => {
+    const second = makeLayer(editor);
+    layer.disposables.dispose();
+
+    markRanges([
+      [7, 0],
+      [8, 5],
+    ]);
+    service.emitter.emit("did-finish-adding-markers");
+
+    expect(layer.update).not.toHaveBeenCalled();
+    expect(second.update).toHaveBeenCalled();
+    expect(second.items).toEqual([{ row: 7, end: 8 }]);
+  });
+
   it("stops updating the layer once the consumer is disposed", () => {
     consumerDisposable.dispose();
     layer.update.calls.reset();
