@@ -4,7 +4,7 @@ describe("marker-highlight", () => {
   let editor, mainModule, provider, layer, layers, service, consumerDisposable;
 
   // Minimal stand-in for the layer object a marker host passes to `initialize`
-  // and `getItems` (see @lumine-code/marker-host lib/index.js).
+  // and `getItems` (see lib/layer.js in the marker package).
   function makeLayer(targetEditor) {
     const fake = {
       editor: targetEditor,
