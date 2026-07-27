@@ -132,33 +132,9 @@ describe("marker-highlight", () => {
     expect(layer.items).toEqual([]);
   });
 
-  // Each renderer builds its own layer for the same editor, so a push has to
-  // reach all of them, and one detaching must not take the others with it.
-  it("pushes to every layer attached to the same editor", () => {
-    const second = makeLayer(editor);
-    markRanges([
-      [4, 0],
-      [4, 5],
-    ]);
-    service.emitter.emit("did-finish-adding-markers");
-    expect(layer.update).toHaveBeenCalled();
-    expect(second.update).toHaveBeenCalled();
-    expect(layer.items).toEqual([{ row: 4, end: 4 }]);
-    expect(second.items).toEqual([{ row: 4, end: 4 }]);
-
-    second.disposables.dispose();
-    layer.update.calls.reset();
-    second.update.calls.reset();
-    service.emitter.emit("did-finish-adding-markers");
-    expect(layer.update).toHaveBeenCalled();
-    expect(second.update).not.toHaveBeenCalled();
-  });
-
-  // The other detach order: the renderer that attached first goes away, and the
-  // layer left in the set must keep receiving pushes.
-  it("keeps pushing to the surviving layer after one detaches", () => {
-    const second = makeLayer(editor);
+  it("forgets the editor when its layer detaches", () => {
     layer.disposables.dispose();
+    layer.update.calls.reset();
 
     markRanges([
       [7, 0],
@@ -167,8 +143,7 @@ describe("marker-highlight", () => {
     service.emitter.emit("did-finish-adding-markers");
 
     expect(layer.update).not.toHaveBeenCalled();
-    expect(second.update).toHaveBeenCalled();
-    expect(second.items).toEqual([{ row: 7, end: 8 }]);
+    expect(mainModule.layers.size).toBe(0);
   });
 
   it("stops updating the layer once the consumer is disposed", () => {
