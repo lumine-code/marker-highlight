@@ -1,13 +1,14 @@
 const { CompositeDisposable, Emitter } = require("atom");
 
-describe("scrollmap-highlight", () => {
-  let editor, mainModule, provider, layer, service, consumerDisposable;
+describe("marker-highlight", () => {
+  let editor, mainModule, provider, layer, layers, service, consumerDisposable;
 
-  // Minimal stand-in for the layer object the scrollmap hub passes to
-  // `initialize` and `getItems` (see lumine-code/scrollmap lib/layer.js).
+  // Minimal stand-in for the layer object a marker host passes to `initialize`
+  // and `getItems` (see @lumine-code/marker-host lib/index.js).
   function makeLayer(targetEditor) {
     const fake = {
       editor: targetEditor,
+      props: provider,
       cache: new Map(),
       items: [],
       disposables: new CompositeDisposable(),
@@ -19,10 +20,10 @@ describe("scrollmap-highlight", () => {
       }
     });
     fake.updateSync = fake.update;
-    fake.refresh = () => {};
     if (provider.initialize) {
       provider.initialize(fake);
     }
+    layers.push(fake);
     return fake;
   }
 
@@ -43,11 +44,12 @@ describe("scrollmap-highlight", () => {
 
   beforeEach(async () => {
     jasmine.attachToDOM(atom.views.getView(atom.workspace));
-    const pack = await atom.packages.activatePackage("scrollmap-highlight");
+    const pack = await atom.packages.activatePackage("marker-highlight");
     mainModule = pack.mainModule;
-    provider = mainModule.provideScrollmapLayer();
+    provider = mainModule.provideMarkerLayer();
     editor = await atom.workspace.open();
     editor.setText(Array(50).fill("hello world").join("\n"));
+    layers = [];
     layer = makeLayer(editor);
     service = makeFakeService();
     consumerDisposable = mainModule.consumeHighlightSelected(service);
@@ -55,7 +57,9 @@ describe("scrollmap-highlight", () => {
 
   afterEach(() => {
     consumerDisposable.dispose();
-    layer.disposables.dispose();
+    for (const attached of layers) {
+      attached.disposables.dispose();
+    }
   });
 
   function markRanges(...ranges) {
@@ -67,12 +71,12 @@ describe("scrollmap-highlight", () => {
     return markerLayer;
   }
 
-  it("activates and provides a scrollmap layer descriptor", () => {
-    expect(atom.packages.isPackageActive("scrollmap-highlight")).toBe(true);
+  it("activates and provides a marker layer descriptor", () => {
+    expect(atom.packages.isPackageActive("marker-highlight")).toBe(true);
     expect(provider.name).toBe("highlight");
     expect(typeof provider.description).toBe("string");
     expect(provider.merge).toBe(true);
-    expect(provider.threshold).toBe("scrollmap-highlight.threshold");
+    expect(provider.threshold).toBe("marker-highlight.threshold");
     expect(typeof provider.initialize).toBe("function");
     expect(typeof provider.getItems).toBe("function");
   });
@@ -96,7 +100,7 @@ describe("scrollmap-highlight", () => {
     ]);
   });
 
-  it("returns raw ranges and leaves sorting and merging to the hub", () => {
+  it("returns raw ranges and leaves sorting and merging to the host", () => {
     // Created out of document order on purpose.
     markRanges(
       [
@@ -126,6 +130,28 @@ describe("scrollmap-highlight", () => {
     markerLayer.clear();
     service.emitter.emit("did-remove-all-markers");
     expect(layer.items).toEqual([]);
+  });
+
+  // Each renderer builds its own layer for the same editor, so a push has to
+  // reach all of them, and one detaching must not take the others with it.
+  it("pushes to every layer attached to the same editor", () => {
+    const second = makeLayer(editor);
+    markRanges([
+      [4, 0],
+      [4, 5],
+    ]);
+    service.emitter.emit("did-finish-adding-markers");
+    expect(layer.update).toHaveBeenCalled();
+    expect(second.update).toHaveBeenCalled();
+    expect(layer.items).toEqual([{ row: 4, end: 4 }]);
+    expect(second.items).toEqual([{ row: 4, end: 4 }]);
+
+    second.disposables.dispose();
+    layer.update.calls.reset();
+    second.update.calls.reset();
+    service.emitter.emit("did-finish-adding-markers");
+    expect(layer.update).toHaveBeenCalled();
+    expect(second.update).not.toHaveBeenCalled();
   });
 
   it("stops updating the layer once the consumer is disposed", () => {

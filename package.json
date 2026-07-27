@@ -1,16 +1,18 @@
 {
-  "name": "scrollmap-highlight",
+  "name": "marker-highlight",
   "author": "lumine-code",
-  "description": "Show highlight markers on the scrollbar.",
-  "repository": "https://github.com/lumine-code/scrollmap-highlight",
+  "description": "Show highlight markers on the scrollbar and minimap.",
+  "repository": "https://github.com/lumine-code/marker-highlight",
   "bugs": {
-    "url": "https://github.com/lumine-code/scrollmap-highlight/issues"
+    "url": "https://github.com/lumine-code/marker-highlight/issues"
   },
   "keywords": [
     "overview-ruler",
     "gutter",
     "annotation",
     "decoration",
+    "scrollmap",
+    "minimap",
     "selection",
     "occurrence"
   ],
@@ -21,7 +23,7 @@
   },
   "main": "./lib/main",
   "scripts": {
-    "test": "cd ../../lumine && npm run test:only -- ../pkg_lumine/scrollmap-highlight/spec",
+    "test": "cd ../../lumine && npm run test:only -- ../pkg_lumine/marker-highlight/spec",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -34,9 +36,9 @@
     }
   },
   "providedServices": {
-    "scrollmap.layer": {
+    "marker.layer": {
       "versions": {
-        "1.0.0": "provideScrollmapLayer"
+        "1.0.0": "provideMarkerLayer"
       }
     }
   },

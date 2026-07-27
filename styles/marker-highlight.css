@@ -1,4 +1,4 @@
-.scrollmap .marker.marker-highlight {
+.marker.marker-highlight {
   z-index: 17;
   background-color: var(--syntax-result-marker-color-selected);
 }
