@@ -26,8 +26,8 @@ The marker style can be adjusted in the `styles.less` file, e.g. change the mark
 
 ## Services
 
-- **[marker.layer](https://lumine-code.github.io/docs.html#services/marker.layer)** (`1.0.0`): provided to render highlighted selection markers as a layer on the editor's overview maps.
-- **[highlight-selected](https://lumine-code.github.io/docs.html#services/highlight-selected)** (`^1.0.0`): consumed to observe the highlight marker layers of each editor.
+- **marker.layer** (`1.0.0`): provided to render highlighted selection markers as a layer on the editor's overview maps.
+- **highlight-selected** (`^1.0.0`): consumed to observe the highlight marker layers of each editor.
 
 ## Contributing
 
