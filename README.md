@@ -16,9 +16,9 @@ To install `marker-highlight` search for _marker-highlight_ in the Install pane 
 
 ## Customization
 
-The marker style can be adjusted in the `styles.less` file, e.g. change the marker color:
+The marker style can be adjusted in the `styles.css` file, e.g. change the marker color:
 
-```less
+```css
 .marker.marker-highlight {
   background-color: var(--text-color-info);
 }
