@@ -1,4 +1,4 @@
-const { CompositeDisposable, Emitter } = require("atom");
+const { CompositeDisposable, Emitter } = require("lumine");
 
 describe("marker-highlight", () => {
   let editor, mainModule, provider, layer, layers, service, consumerDisposable;
@@ -43,11 +43,11 @@ describe("marker-highlight", () => {
   }
 
   beforeEach(async () => {
-    jasmine.attachToDOM(atom.views.getView(atom.workspace));
-    const pack = await atom.packages.activatePackage("marker-highlight");
+    jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
+    const pack = await lumine.packages.activatePackage("marker-highlight");
     mainModule = pack.mainModule;
     provider = mainModule.provideMarkerLayer();
-    editor = await atom.workspace.open();
+    editor = await lumine.workspace.open();
     editor.setText(Array(50).fill("hello world").join("\n"));
     layers = [];
     layer = makeLayer(editor);
@@ -72,7 +72,7 @@ describe("marker-highlight", () => {
   }
 
   it("activates and provides a marker layer descriptor", () => {
-    expect(atom.packages.isPackageActive("marker-highlight")).toBe(true);
+    expect(lumine.packages.isPackageActive("marker-highlight")).toBe(true);
     expect(provider.name).toBe("highlight");
     expect(typeof provider.description).toBe("string");
     expect(provider.merge).toBe(true);
