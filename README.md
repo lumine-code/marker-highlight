@@ -12,7 +12,7 @@ A layer package for [scrollmap](https://github.com/lumine-code/scrollmap) and [m
 
 ## Installation
 
-To install `marker-highlight` search for _marker-highlight_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/marker-highlight`.
+To install `marker-highlight` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/marker-highlight`.
 
 ## Customization
 
@@ -26,8 +26,8 @@ The marker style can be adjusted in the `styles.css` file, e.g. change the marke
 
 ## Services
 
-- **marker.layer** (`1.0.0`): provided to render highlighted selection markers as a layer on the editor's overview maps.
-- **highlight-selected** (`^1.0.0`): consumed to observe the highlight marker layers of each editor.
+- `marker.layer`: provided to render highlighted selection markers as a layer on the editor's overview maps.
+- `highlight-selected`: consumed to observe the highlight marker layers of each editor.
 
 ## Contributing
 
