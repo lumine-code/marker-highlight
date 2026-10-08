@@ -1,6 +1,7 @@
 # marker-highlight
 
 > [!WARNING]
+
 > **This package is deprecated.** Its marker layer now ships with [highlight-selected](https://github.com/lumine-code/highlight-selected) itself — the marker-* adapter packages were folded into their host packages, and this layer's settings moved to `highlight-selected.marker.*`. This repository is archived and no longer maintained.
 
 Show highlight markers on the scrollbar and minimap.
